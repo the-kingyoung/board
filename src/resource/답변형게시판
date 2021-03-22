@@ -1,0 +1,82 @@
+# 답변형 게시판
+1. 주요기능
+	1) 전체글 리스트
+		block단위 페이징 처리
+			[1][2][3][4][5]>>
+			<<[6][7][8][9][10]>>
+		검색 처리
+		계층형 답글 달기 처리
+	2) 글등록
+		첨부파일 처리(다중파일)
+	3) 상세화면리스트
+		수정
+		삭제
+		파일다운로드
+		답글
+2. 개발 순서
+	1) DB 설계 및 테이블 구성
+		board : 번호, 상위번호, 제목, 작성자, 등록일, 수정일, 조회수, 내용
+				no	refno	subject writer regdte updte readcnt content
+		boardfile : 번호, 파일명, 경로명, 내용, 생서일
+					no	fname pathname content credte
+		board_seq (sequence만들기)
+	2) vo작성
+		리스트/입력 처리 vo
+		조회처리 및 페이지처리 관련 vo
+		첨부파일 vo
+	3) 기본 조회 리스트 작성 하기
+		select * form board
+		where subject like'%%'
+		and writer like '%%';
+		dao
+		mapper
+		service
+		controller
+		jsp(화면출력)
+	4) 등록처리
+		sql : insert into board values()
+			  insert into boardFile values();
+		dao
+		mapper
+		serviece
+			첨부파일 로직 처리..
+		controller
+		jsp(초기화면 구성)
+	5) 상세화면처리
+		- 상세화면보기
+		- 수정
+		- 삭제
+		- 답글
+	6) 계층형 리스트 처리하기.
+		- 계층형 sql 작성
+		- 조회 vo 할당
+		- service단에서 business로직 처리.
+		- 계층적 리스트 및 페이징 처리..
+
+
+# DB 설계 및 VO만들기
+	1) DB 설계 및 테이블 구성
+		board : 번호, 상위번호, 제목, 작성자, 등록일, 수정일, 조회수, 내용
+				no	refno	subject writer regdte updte readcnt content
+		boardfile : 번호, 파일명, 경로명, 내용, 생서일
+					no	fname pathname content credte
+		board_seq (sequence만들기)
+	2) vo작성
+		리스트/입력 처리 vo(board.z01_vo.Board)
+		조회처리 및 페이지처리 관련 vo
+		첨부파일 vo(board.z01_vo.BoardFile)
+		
+# 기본 조회 리스트 작성하기
+	1) sql
+		select * form board
+		where subject like'%%'
+		and writer like '%%'
+		order by no desc;
+	2) 	dao		public ArrayList<Board> boardList(board sch);
+	3) 	mapper
+	4)	service
+			- board.a02_service.A01_BoardService
+	5)	controller
+			modelAttribute 명 sch
+			model명 boardList
+		jsp(화면출력)
