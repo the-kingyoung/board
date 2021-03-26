@@ -30,4 +30,22 @@ MAXVALUE 9999999;
 INSERT INTO board values(board_seq.nextval,0,'첫번째 글','내용','홍길동',0,sysdate,sysdate);
 SELECT * FROM board;
 
+SELECT * FROM boardfile;
+
+SELECT*
+FROM
+(SELECT ROWNUM RN, A.*
+FROM BOARD A)
+WHERE RN BETWEEN 1 AND 10;
+
+SELECT *
+from(
+select rownum rn, level, a.* from board a
+start with refno=0
+connect by prior no=refno
+order siblings by no DESC)
+WHERE rn BETWEEN 1 AND 5;
+
+SELECT * FROM board;
+
 	

@@ -4,6 +4,7 @@ driver=oracle.jdbc.driver.OracleDriver
 dburl=jdbc:oracle:thin:@localhost:1521:xe
 user=scott
 pass=tiger
-# driver dburl user pas
-
+# driver dburl user pass
 # 파일 서버 정보
+upload=C:/eclipse-workspace/board/WebContent/z01_upload/
+uploadTmp=C:/eclipse-workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp1/wtpwebapps/board/z01_upload/

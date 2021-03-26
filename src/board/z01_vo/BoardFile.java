@@ -12,14 +12,14 @@ public class BoardFile {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public BoardFile(int no, String fname, String pathname, String content, Date credte) {
+
+	public BoardFile(String fname, String pathname, String content) {
 		super();
-		this.no = no;
 		this.fname = fname;
 		this.pathname = pathname;
 		this.content = content;
-		this.credte = credte;
 	}
+
 	public int getNo() {
 		return no;
 	}
@@ -50,5 +50,6 @@ public class BoardFile {
 	public void setCredte(Date credte) {
 		this.credte = credte;
 	}
+	
 
 }

@@ -4,6 +4,9 @@
 <configuration>
 	<typeAliases>
 		<typeAlias alias="board" type="board.z01_vo.Board"/>
+		<typeAlias alias="boardfile" type="board.z01_vo.BoardFile"/>
+		<typeAlias alias="boardsch" type="board.z01_vo.BoardSch"/>
+		
 	</typeAliases>
 	<mappers>
 		<mapper resource="resource/BoardMapper.xml"/>

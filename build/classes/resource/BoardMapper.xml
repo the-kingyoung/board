@@ -4,14 +4,102 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="board.a03_dao.A01_BoardDao">
 <!-- 
+public int totCnt(BoardSch sch);
 public ArrayList<Board> boardList(Board sch);
  -->
- 	<resultMap type="board" id="boardMap"/>
- 	<select id="boardList" resultMap="boardMap" 
- 			parameterType="board">
- 		select * from board
+ 	<select id="totCnt" resultType="int" parameterType="boardsch">
+ 	 	select count(*) 
+ 	 	from board
 		where subject like '%'||#{subject}||'%'
 		and writer like '%'||#{writer}||'%'
-		order by no desc
  	</select>
+ 	
+ 	<resultMap type="board" id="boardMap"/>
+ 	<select id="boardList" resultMap="boardMap"
+ 			parameterType="boardsch">
+ 	select *
+ 	from(
+ 		select rownum rn, level, a.* 
+ 		from board a
+		where subject like '%'||#{subject}||'%'
+		and writer like '%'||#{writer}||'%'
+		start with refno=0
+		connect by prior no=refno
+		order siblings by no desc
+	)
+	where rn between #{start} and #{end}
+ 	</select>
+<!-- 
+public void insertBoard(Board insert);
+ -->
+	<insert id="insertBoard" parameterType="board">
+		INSERT INTO board values(board_seq.nextval,
+			#{refno},#{subject},#{content},
+			#{writer},0,sysdate,sysdate)
+	</insert>
+	<!--상위 board의 번호와 첨부파일의 번호를 동일..
+	board_seq.nextval 후, board_seq.currval -->
+	<insert id="uploadFile" parameterType="boardfile">
+		INSERT INTO BOARDFILE values (board_seq.currval,
+			#{fname},#{pathname},#{content},sysdate)
+	</insert>
+	<!-- public Board getBoard(int no); -->
+	<select id="getBoard" resultType="board" parameterType="int">
+		select * 
+		from board 
+		where no=#{no}
+	</select>
+	<!-- 
+	ArrayList<BoardFile> fileInfo(int no); 
+	resultMap : ArrayList형태의 데이터 중에 column명과 property가
+	다를 때, 활용..
+	같을 때는 ArrayList<BoardFile>의 단위 객체 resultType(boardfile)만으로도
+	할당이 가능하다.	
+	-->
+	<select id="fileInfo" resultType="boardfile" parameterType="int">
+		select * 
+		from boardfile
+		where no = #{no}
+	</select>
+	<!-- public void uptReadCnt(int no); -->
+	<update id="uptReadCnt" parameterType="int">
+		update board
+		set readcnt=readcnt+1
+		where no=#{no}
+	</update>
+	<!-- public void updateBoard(Board upt); -->
+	<update id="updateBoard" parameterType="board">
+		update board
+		set subject = #{subject},
+			content = #{content},
+			uptdte = sysdate
+		where no = #{no}
+	</update>
+	  <!-- 
+      update boardfile
+      set fname = #{fname}
+   where no = #{no}
+     and fname = #{orgFname}
+    -->
+    <update id="updateFile" parameterType="hashmap">
+          update boardfile
+            set fname = #{fname}
+         where no = #{no}
+              and fname = #{orgFname}
+    </update>
+	<!-- 
+	public void deleteBoard(int no);
+	public void deleteFile(int no);
+	 -->
+	 <delete id="deleteBoard" parameterType="int">
+	 	delete from board where no=#{no}
+	 </delete>
+	 <delete id="deleteFile" parameterType="int">
+	 	delete from boardfile where no=#{no}
+	 </delete>
 </mapper>
+
+
+
+
+
