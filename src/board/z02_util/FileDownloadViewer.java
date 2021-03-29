@@ -33,6 +33,8 @@ public class FileDownloadViewer extends AbstractView {
 		//
 		
 		// 1. 모델명으로 파일명을 호출 처리..
+		//		다운로드할 controller 
+		//		modle.addAttribute("downloadFile", 파일명);
 		String fname = (String)model.get("downloadFile");	// 컨트롤러의 이름과 동일
 		// 2. 파일 객체를 통해서 파일을 가져온다.
 		File file = new File(upload+fname);

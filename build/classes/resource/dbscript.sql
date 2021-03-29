@@ -43,8 +43,7 @@ from(
 select rownum rn, level, a.* from board a
 start with refno=0
 connect by prior no=refno
-order siblings by no DESC)
-WHERE rn BETWEEN 1 AND 5;
+order siblings by no DESC);
 
 SELECT * FROM board;
 

@@ -39,11 +39,15 @@
          if(confirm("수정완료\n조회페이지로 이동하시겠습니까?")){
             location.href="${path}/board.do?method=list";
          }
+      }else if(proc=="del"){
+    	  alert("삭제 되었습니다")
+    	  $(location).attr("href","${path}/board.do?method=list");
       }
       
       $("#goMain").on("click",function(){
          location.href="${path}/board.do?method=list";
-      })
+      });
+      // 파일 다운로드 처리..
       $("#uptBtn").click(function(){
          var writer = $("[name=writer]").val();
          if(memId == writer){
@@ -93,7 +97,11 @@
     			  $("form").attr("action","${path}/board.do?method=delete");
     			  $("form").submit();
     		  }
-      });
+    		  else{
+    	  			alert("삭제권한이 없습니다.\n작성자만 삭제가 가능합니다!");
+				}
+   		});
+      
    });
 </script>
 </head>

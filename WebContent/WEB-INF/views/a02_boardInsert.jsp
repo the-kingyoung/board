@@ -35,8 +35,10 @@
 			$("[name=subject]").val("");
 			$("[name=content]").val("");
 			
-			if(!confirm("등록 완료!!\n계속 등록하시겠습니까?")){
-				location.href="${path}/board.do?method=list";
+			if(confirm("등록 완료!!\n계속 등록하시겠습니까?")){
+				location.href="${path}/board.do?method=insForm";
+			}else{
+				location.href="${path}/board.do?method=list";				
 			}
 			
 		}

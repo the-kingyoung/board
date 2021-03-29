@@ -1,5 +1,8 @@
 package board.a01_controller;
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -21,13 +24,17 @@ public class A01_BoardController {
 	
 	@Autowired(required = false)
 	private A01_BoardService service;
+	@ModelAttribute("pageOp")
+	public List<String> tools(){
+		return Arrays.asList("3","5","10","20","30");
+	}
 	
 	
 	// http://localhost:7080/board/board.do?method=list
 	@RequestMapping(params = "method=list")
 	public String boardlist(@ModelAttribute("sch") BoardSch sch,
 			Model d,HttpServletRequest request) {
-		// 세션 설정.
+		// 세션 설정.==
 		HttpSession session = request.getSession();
 		session.setAttribute("mem", new Member("himan","7777"));
 		
@@ -39,6 +46,9 @@ public class A01_BoardController {
 	public String insForm(@ModelAttribute("board") Board b) {
 		return "a02_boardInsert";
 	}
+	// 초기에 모델어트리뷰트에 객체가 데이터를 받지 못할 때
+	// 객체 형태는 null 숫자형태는 0으로 디폴트값이 설정된다.
+	
 	
 	// http://localhost:7080/board/board.do?method=insert
 	@RequestMapping(params = "method=insert")
@@ -65,17 +75,17 @@ public class A01_BoardController {
 	   @RequestMapping(params="method=delete")
 	   public String deleteBoard(@RequestParam("no") int no) {
 		   service.deleteBoard(no);
-		   return "a01_boardList";
+		   return "a03_boardDetail";
 	   }
 
 	// http://localhost:7080/board/board.do?method=download
-	
 	// 화면단에 클릭시, 
 	// http://localhost:7080/board/board.do?method=download&fname=파일명
 	@RequestMapping(params="method=download")
 	public String download(@RequestParam("fname") String fname, Model d) {
 		System.out.println("파일명 : "+fname);
-		d.addAttribute("downloadFile", fname);// viewer안에 선언한 모델명 - 파일다운로드뷰어에 같은 이름을 사용해준다.
+		d.addAttribute("downloadFile", fname);
+		// viewer안에 선언한 모델명 - 파일다운로드뷰어에 같은 이름을 사용해준다.
 		// 컨테이너 안에 있는 viewer명.
 		return"downloadviewer";
 	}

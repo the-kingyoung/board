@@ -48,7 +48,16 @@ public class A01_BoardService {
 		// start, end 속성을 도출하기위하여...
 		sch.setEnd(sch.getCurPage()*sch.getPageSize());
 		sch.setStart((sch.getCurPage()-1)*sch.getPageSize()+1);
-		
+		//# 블럭 처리..
+		// 1. 초기 block의 크기 지정 : 5
+		sch.setBlocksize(5);
+		// 2. blocknum : 현재페이지/블럭의 크기를 올림 처리.
+		int blocknum = (int)Math.ceil(sch.getCurPage()/(double)sch.getBlocksize());
+		// 3. endblock
+		int endBlock = blocknum*sch.getBlocksize();
+		sch.setEndblock(endBlock>sch.getPageCount()?sch.getPageCount():endBlock);
+		// 4. startblock
+		sch.setStartblock((blocknum-1)*sch.getBlocksize()+1);
 		return dao.boardList(sch);
 	}
 	public void insertBoard(Board insert) {
@@ -57,7 +66,7 @@ public class A01_BoardService {
 		// 2. 데이터베이스 처리..
 		dao.insertBoard(insert);	// 메인 board 테이블에 정보 등록
 		// 1. 물리적 파일 업로드
-		String fname=null;
+		String fname = null;
 		File tmpFile = null; // 임시위치
 		File orgFile = null; // 업로딩 위치
 		//임시파일 삭제 처리
@@ -134,19 +143,26 @@ public class A01_BoardService {
 	};
 	
    public void updateBoard(Board upt) {
-	      if(upt.getSubject() == null) upt.setSubject("");
-	      if(upt.getContent() == null) upt.setContent("");
+	   int no = upt.getNo();
+//	      if(upt.getSubject() == null) upt.setSubject("");
+//	      if(upt.getContent() == null) upt.setContent("");
+//	      
+//	      System.out.println("기존파일 갯수: " + upt.getFnames().length);
+//	      System.out.println("수정할 파일 갯수: " + upt.getReport().length);
+	      /*
+	      # 파일 수정시, 처리할 내용.
+	      1. 수정할 파일 upload(물리적)
+	      2. 기존 파일을 수정할 파일명으로 변경(DB 처리)
 	      
-	      System.out.println("기존파일 갯수: " + upt.getFnames().length);
-	      System.out.println("수정할 파일 갯수: " + upt.getReport().length);
-	      
-	      int no = upt.getNo();
-	      
+	       */
+	      // 수정시, 등록한 파일이 없을 때,
+	      if(upt.getFnames()!=null&&
+	    		  upt.getFnames().length>0) {
 	      // 첨부 파일 물리적 위치 지정
 	      String fname = null;   // 수정할 파일명
 	      String orgFname = null;   // 기존 파일명
-	      File tmpFile = null;
-	      File orgFile = null;
+	      File tmpFile = null;		// 임시 폴더
+	      File orgFile = null;		// 실제 업로드 폴더
 	      // 변경할 파일
 	      MultipartFile mpf = null;
 	      // 임시 파일 삭제 처리
@@ -155,13 +171,13 @@ public class A01_BoardService {
 	         System.out.println("삭제할 파일: " + f.getName());
 	         f.delete();
 	      }
-	      
+	      // 수정할 파일과 업로드로 대체할 파일은 index가 같다.
 	      for(int idx=0;idx<upt.getReport().length;idx++) {
-	         mpf = upt.getReport()[idx];
-	         fname = mpf.getOriginalFilename();
-	         
+	         mpf = upt.getReport()[idx];	// 대체할 파일 가져오기
+	         fname = mpf.getOriginalFilename();	// 대체할 파일명 가져오기.
 	         // 기존 파일명
-	         orgFname = upt.getFnames()[idx];
+	         orgFname = upt.getFnames()[idx]; // 수정할 기존 파일명
+	         // 변경할 파일 선택해서 추가할 때만 처리할 수 있도록 조건
 	         if(fname != null && !fname.trim().equals("")) {
 	            // 해당 폴더에 기존 파일은 일단 삭제(임시 폴더)
 	            tmpFile = new File(uploadTmp+orgFname);
@@ -173,7 +189,7 @@ public class A01_BoardService {
 	            if(orgFile.exists()) {
 	               orgFile.delete();
 	            }
-	            
+	            // 선택한 파일을 임시폴더 위치/ 업로드할 위치로 파일객체 생성.
 	            tmpFile = new File(uploadTmp+fname);
 	            orgFile = new File(upload+fname);
 	            
@@ -205,9 +221,9 @@ public class A01_BoardService {
 	         }
 	      }
 	      // 메일 게시판 수정 정보.
-	      dao.updateBoard(upt);     
+	      dao.updateBoard(upt);
 	   }
-   
+   }
 		public void deleteBoard(int no) {
 			dao.deleteFile(no);
 			dao.deleteBoard(no);

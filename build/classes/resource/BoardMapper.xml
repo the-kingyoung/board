@@ -12,14 +12,15 @@ public ArrayList<Board> boardList(Board sch);
  	 	from board
 		where subject like '%'||#{subject}||'%'
 		and writer like '%'||#{writer}||'%'
- 	</select>
- 	
+		start with refno=0
+		connect by prior no = refno
+ 	</select> 	
  	<resultMap type="board" id="boardMap"/>
  	<select id="boardList" resultMap="boardMap"
  			parameterType="boardsch">
  	select *
  	from(
- 		select rownum rn, level, a.* 
+ 		select rownum cnt, level, a.* 
  		from board a
 		where subject like '%'||#{subject}||'%'
 		and writer like '%'||#{writer}||'%'
@@ -27,7 +28,7 @@ public ArrayList<Board> boardList(Board sch);
 		connect by prior no=refno
 		order siblings by no desc
 	)
-	where rn between #{start} and #{end}
+	where cnt between #{start} and #{end}
  	</select>
 <!-- 
 public void insertBoard(Board insert);
@@ -92,10 +93,17 @@ public void insertBoard(Board insert);
 	public void deleteFile(int no);
 	 -->
 	 <delete id="deleteBoard" parameterType="int">
-	 	delete from board where no=#{no}
+	 	delete from board 
+	 	where no in(
+	 		select no
+	 		from board a
+	 		start with no=#{no}
+	 		connect by prior no = refno
+	 	)
 	 </delete>
 	 <delete id="deleteFile" parameterType="int">
-	 	delete from boardfile where no=#{no}
+	 	delete from boardfile
+	 	where no=#{no}
 	 </delete>
 </mapper>
 

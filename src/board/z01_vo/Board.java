@@ -10,6 +10,7 @@ public class Board {
 //   board : 번호, 상위번호, 제목, 작성자, 등록일, 수정일, 조회수, 내용
 //   no   refno subject writer regdte uptdte readcnt content
 	private int level;
+	private int cnt;
 	private int no;
 	private int refno;
 	private String subject;
@@ -18,9 +19,9 @@ public class Board {
 	private int readcnt;
 	private Date regdte;
 	private Date uptdte;
-	private MultipartFile[] report;   //업로드 시
+	private MultipartFile[] report;   //업로드 시(파일 수정시 업로드)
+	private String[] fnames; // 파일 수정 시 사용. report, fnames 인덱스가 동일
 	private ArrayList<BoardFile> fileInfo;   //다운로드시 필요
-	private String[] fnames; // 파일 수정 시 사용
 	public Board() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -31,6 +32,12 @@ public class Board {
 		this.writer = writer;
 	}
   
+	public int getCnt() {
+		return cnt;
+	}
+	public void setCnt(int cnt) {
+		this.cnt = cnt;
+	}
 	public int getNo() {
 		return no;
 	}
