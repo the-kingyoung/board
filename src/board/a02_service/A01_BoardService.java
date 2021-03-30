@@ -45,19 +45,24 @@ public class A01_BoardService {
 		if(sch.getCurPage()==0) {
 			sch.setCurPage(1);
 		}
+		//		마지막 페이지 블럭에서 next를 클릭한 것에 대한 예외 처리
+		if(sch.getCurPage()>sch.getPageCount()) {
+			sch.setCurPage(sch.getPageCount());
+		}
 		// start, end 속성을 도출하기위하여...
 		sch.setEnd(sch.getCurPage()*sch.getPageSize());
 		sch.setStart((sch.getCurPage()-1)*sch.getPageSize()+1);
 		//# 블럭 처리..
 		// 1. 초기 block의 크기 지정 : 5
-		sch.setBlocksize(5);
+		sch.setBlockSize(5);
 		// 2. blocknum : 현재페이지/블럭의 크기를 올림 처리.
-		int blocknum = (int)Math.ceil(sch.getCurPage()/(double)sch.getBlocksize());
+		int blocknum = (int)Math.ceil(sch.getCurPage()/(double)sch.getBlockSize());
 		// 3. endblock
-		int endBlock = blocknum*sch.getBlocksize();
-		sch.setEndblock(endBlock>sch.getPageCount()?sch.getPageCount():endBlock);
+		int endBlock = blocknum*sch.getBlockSize();
+		sch.setEndBlock(endBlock>sch.getPageCount()?sch.getPageCount():endBlock);
 		// 4. startblock
-		sch.setStartblock((blocknum-1)*sch.getBlocksize()+1);
+		//		블럭의 마지막 페이지 번호+1이 현재 블럭의 첫번째 페이지 번호
+		sch.setStartBlock((blocknum-1)*sch.getBlockSize()+1);
 		return dao.boardList(sch);
 	}
 	public void insertBoard(Board insert) {

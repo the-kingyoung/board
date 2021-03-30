@@ -12,9 +12,9 @@ public class BoardSch {
 	private int start;		// 페이지의 시작 번호
 	private int end;		// 페이지의 마지막 번호
 	//3. block 처리
-	private int blocksize;	// 한번에 보여줄 block의 크기
-	private int startblock;	// block의 시작번호
-	private int endblock;	// block의 마지막번호
+	private int blockSize;	// 한번에 보여줄 block의 크기
+	private int startBlock;	// block의 시작번호
+	private int endBlock;	// block의 마지막번호
 	public String getSubject() {
 		return subject;
 	}
@@ -62,24 +62,25 @@ public class BoardSch {
 	}
 	public void setEnd(int end) {
 		this.end = end;
-		
 	}
-	public int getBlocksize() {
-		return blocksize;
+	public int getBlockSize() {
+		return blockSize;
 	}
-	public void setBlocksize(int blocksize) {
-		this.blocksize = blocksize;
+	public void setBlockSize(int blockSize) {
+		this.blockSize = blockSize;
 	}
-	public int getStartblock() {
-		return startblock;
+	public int getStartBlock() {
+		return startBlock;
 	}
-	public void setStartblock(int startblock) {
-		this.startblock = startblock;
+	public void setStartBlock(int startBlock) {
+		this.startBlock = startBlock;
 	}
-	public int getEndblock() {
-		return endblock;
+	public int getEndBlock() {
+		return endBlock;
 	}
-	public void setEndblock(int endblock) {
-		this.endblock = endblock;
+	public void setEndBlock(int endBlock) {
+		this.endBlock = endBlock;
 	}
+	
+
 }
