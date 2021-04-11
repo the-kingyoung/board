@@ -7,8 +7,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 public class Board {
-//   board : 번호, 상위번호, 제목, 작성자, 등록일, 수정일, 조회수, 내용
-//   no   refno subject writer regdte uptdte readcnt content
+//   board : 번호, 상위번호, 제목,   작성자,   등록일,  수정일,  조회수,   내용
+//   		 no   refno subject writer regdte uptdte readcnt content
 	private int level;
 	private int cnt;
 	private int no;

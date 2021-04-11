@@ -4,6 +4,7 @@
 <configuration>
 	<typeAliases>
 		<typeAlias alias="board" type="board.z01_vo.Board"/>
+		<typeAlias alias="member" type="board.z01_vo.Member"/>
 		<typeAlias alias="boardfile" type="board.z01_vo.BoardFile"/>
 		<typeAlias alias="boardsch" type="board.z01_vo.BoardSch"/>
 	</typeAliases>

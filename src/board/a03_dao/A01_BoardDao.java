@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import board.z01_vo.Board;
 import board.z01_vo.BoardFile;
 import board.z01_vo.BoardSch;
+import board.z01_vo.Member;
 // board.a03_dao.A01_BoardDao
 @Repository
 public interface A01_BoardDao {
@@ -23,4 +24,5 @@ public interface A01_BoardDao {
 	public void updateFile(HashMap<String, String> hs);
 	public void deleteBoard(int no);
 	public void deleteFile(int no);
+	public Member login(Member mem);
 }

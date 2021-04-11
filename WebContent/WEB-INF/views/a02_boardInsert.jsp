@@ -53,6 +53,14 @@
 			// .clone()을 해서 복사해서 DOM객체가 추가하여 생성할 수 있게 한다.
 			$("#fileArea").append($(".custom-file").eq(0).clone());
 		});
+		$("#logout").click(function(){
+			location.href="${path}/board.do?method=logout";
+		});
+		var sessId = "${sesMem.id}";
+		if(sessId==""){
+			alert("로그인이 필요합니다!\n로그인화면으로 이동");
+			location.href="${path}/board.do?method=login";
+		};
 
 	});
 	function rm(obj){
@@ -82,10 +90,17 @@
 		<tr class="text-center">
 			<th class="table-success">제목</th>
 			<td><form:input path="subject" class="form-control" /></td>
+			<%--<input id="subject" name="subject">
+				스프링 form태그를 통해서 생성
+				
+				readonly value="${sesMem.id}"
+			 --%>
 		</tr>
 		<tr class="text-center">
 			<th class="table-success">작성자</th>
-			<td><input type="text" name="writer" value="${mem.id}" class="form-control"/></td>
+			<td><input type="text" name="writer" 
+				readonly
+				value="${sesMem.id}" class="form-control"/></td>
 		</tr>
 		<tr class="text-center">
 			<th class="table-success">내용</th>

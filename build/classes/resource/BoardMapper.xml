@@ -105,6 +105,12 @@ public void insertBoard(Board insert);
 	 	delete from boardfile
 	 	where no=#{no}
 	 </delete>
+	 <select id="login" parameterType="member" resultType="member">
+	 	select * from member5
+	 	 where id=#{id} and pass=#{pass}
+	 </select>
+	 
+	 
 </mapper>
 
 

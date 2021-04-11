@@ -9,7 +9,9 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -98,5 +100,30 @@ public class A01_BoardController {
 		return "forward:/board.do?method=detail";
 	}	// 수정 후, 다시 조회 처리할 수 있게 하기 위하여 forward로
 		// 해당 controller 기능 메서드 호출..
+	
+	// http://localhost:7080/board/board.do?method=login
+	@GetMapping(params = "method=login")
+	public String login() {
+		return "a04_login";
+	}
+	@PostMapping(params= "method=login")
+	public String login(Member mem, HttpServletRequest request) {
+		System.out.println("아이디:"+mem.getId());
+		String page="a04_login";
+		Member ckDB = service.login(mem);
+		if(ckDB!=null){
+			HttpSession session = request.getSession();
+			session.setAttribute("sesMem",ckDB);
+			request.setAttribute("loginSucc", "Y");
+		}else {
+			request.setAttribute("loginSucc", "N");
+		}
+		return "a04_login";
+	}
+	@RequestMapping(params= "method=logout")
+	public String logout(HttpServletRequest request){
+		request.getSession().invalidate();
+	return "redirect:/board.do?method=login";
+	}
 	
 }

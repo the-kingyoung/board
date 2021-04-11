@@ -32,6 +32,14 @@
 --%>
 //
    $(document).ready(function(){
+		$("#logout").click(function(){
+			location.href="${path}/board.do?method=logout";
+		});
+		var sessId = "${sesMem.id}";
+		if(sessId==""){
+			alert("로그인이 필요합니다!\n로그인화면으로 이동");
+			location.href="${path}/board.do?method=login";
+		};
       var memId = "${mem.id}";
       
       var proc = "${param.proc}"; 
@@ -90,7 +98,7 @@
       });
       $("#delBtn").click(function(){
     	  var writer = $("[name=writer]").val();
-    	  //if(memId=writer)
+    	  //if(sessId=writer)
     		  if(confirm("삭제하시겠습니까?")){
     			  //var no = $("input[name=no]").val(); post방식 필요X
     			  $("[name=proc]").val("del");
